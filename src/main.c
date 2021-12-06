@@ -1,5 +1,7 @@
 #include <stdio.h>
 
+#include "files.h"
+
 void show_help() {
     printf("Usage:\n");
     printf("    tasc FILE...\n");
@@ -11,6 +13,8 @@ int main(int argc, char *argv[]) {
         show_help();
         return 1;
     }
+
+    read_source_file(argv[1]);
 
     return 0;
 }
