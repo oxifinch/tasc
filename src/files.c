@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "files.h"
+#include "parsing.h"
 
 void read_source_file(char *file_path) {
     FILE *fp;
@@ -15,7 +16,8 @@ void read_source_file(char *file_path) {
     while(fgets(line, sizeof(line), fp)) {
         //printf("%3d: %s", ln_num, line); // For debugging only
         ln_num++;
+        parse_task_line(line);
         // TODO: Find task items here
+        
     }
-
 }
