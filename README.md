@@ -5,8 +5,8 @@ A simple command line utility which scans source files for comments labeled
 
 ## Usage
 Run `tasc` on any number of files, for example `tasc src/*`. The resulting `todo.md`
-file should contain task items with the filename and line number attached, something
-like this:
+file should contain task items with the filename(relative to the `todo.md` file) and
+line number attached, something like this:
 ```md
 - [ ] src/main.c:32 Move these functions to their own separate files
 - [ ] src/parsing.c:78 This works, but the implementation is a bit janky
