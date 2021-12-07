@@ -1,6 +1,7 @@
 #include <stdio.h>
 
 #include "files.h"
+#include "parsing.h"
 
 void show_help() {
     printf("Usage:\n");
@@ -14,6 +15,8 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
+    // TODO: HELLO THERE!
+    // todo: eat beans lmao
     read_source_file(argv[1]);
 
     return 0;

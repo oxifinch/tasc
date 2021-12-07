@@ -3,6 +3,7 @@
 
 #define MAX_LINE_LENGTH 250
 
-char *parse_task_line(char *line);
+int find_pattern_index(char *substr, char *str);
+int parse_task_line(char *line, char *dest);
 
 #endif
