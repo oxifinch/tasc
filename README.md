@@ -17,8 +17,8 @@ line number attached, something like this:
 
 ## TO DO
 Essential features:
-- [ ] Read file(s) from command line
-- [ ] Scan each file and find TODO lines
+- [x] Read file(s) from command line
+- [x] Scan each file and find TODO lines
 - [ ] Parse each line and return a formatted string
 - [ ] Append formatted string to `todo.md` file
 

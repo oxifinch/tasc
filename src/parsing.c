@@ -54,7 +54,7 @@ int parse_task_line(char *line, char *dest) {
 
             for(int i = 0; i < sizeof(keywords)/sizeof(keywords[0]); i++) {
                 if(strcmp(word, keywords[i]) == 0) {
-                    strcpy(line, dest);
+                    strcpy(dest, line);
                     match_found = 1;
                     break;
                 }

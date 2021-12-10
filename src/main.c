@@ -15,9 +15,11 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
+    char *str_list[100][MAX_LINE_LENGTH];
+
     // TODO: HELLO THERE!
     // todo: eat beans lmao
-    read_source_file(argv[1]);
+    read_source_file(argv[1], **str_list);
 
     return 0;
 }
