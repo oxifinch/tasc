@@ -21,11 +21,14 @@ void read_source_file(char *file_path, char *dest_list) {
     // Scan file line by line
     unsigned int ln_num = 1;
     char line[MAX_LINE_LENGTH];
+
+    // Main line scanning loop
     while(fgets(line, sizeof(line), fp)) {
         //printf("%3d: %s", ln_num, line); // For debugging only
+        if(verify_todo_item(line)) {
+            printf("Found a match on line: %d\n", ln_num); // For debugging only
+            // TODO: Parse line here
+        }
         ln_num++;
-        char *parsed_str[MAX_LINE_LENGTH];
-        int result = parse_task_line(line, *parsed_str);
-        printf("%d: Result: %d\n", ln_num, result);
     }
 }
