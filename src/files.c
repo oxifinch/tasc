@@ -10,7 +10,7 @@
             together so that they can be used by the other functions that create the
             tasklist and corresponding file.
 */
-void read_source_file(char *file_path) {
+void read_source_file(char *file_path, char *dest_list) {
     FILE *fp;
     fp = fopen(file_path, "r");
     if(fp == NULL) {

@@ -1,5 +1,5 @@
 run: tasc
-	./tasc
+	./tasc src/main.c
 
 tasc: build/main.o build/files.o build/parsing.o
 	gcc build/main.o build/files.o build/parsing.o -o tasc
