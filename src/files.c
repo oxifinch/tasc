@@ -28,6 +28,9 @@ void read_source_file(char *file_path, char *dest_list) {
         if(verify_todo_item(line)) {
             printf("Found a match on line: %d\n", ln_num); // For debugging only
             // TODO: Parse line here
+            char *parsed_line[MAX_LINE_LENGTH];
+            parse_task_line(*parsed_line, line, ln_num, *file_path);
+            printf("%s\n", *parsed_line);
         }
         ln_num++;
     }

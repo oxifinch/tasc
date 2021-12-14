@@ -5,7 +5,7 @@
 
 #define MAX_LINE_LENGTH 250
 
-int find_pattern_index(char *substr, char *str);
 bool verify_todo_item(char *line);
+void parse_task_line(char *buf, char *line, int ln_num, char src_file_name);
 
 #endif

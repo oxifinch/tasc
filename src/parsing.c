@@ -32,3 +32,13 @@ bool verify_todo_item(char *line) {
     }
     return match_found;
 }
+
+/*
+  Reads a line and returns a formatted representation of it with the line number and
+  source file where it was found. It should look something like this:
+  "- [ ] src/my-file.js:52 | Do the thing."
+*/
+void parse_task_line(char *buf, char *line, int ln_num, char src_file_name) {
+    char *task_str[250];
+    snprintf(*task_str, MAX_LINE_LENGTH, "- [ ] %s:%d | %s", &src_file_name, ln_num, line);
+}

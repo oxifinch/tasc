@@ -19,7 +19,7 @@ line number attached, something like this:
 Essential features:
 - [x] Read file(s) from command line
 - [x] Scan each file and find TODO lines
-- [ ] Parse each line and return a formatted string
+- [x] Parse each line and return a formatted string
 - [ ] Append formatted string to `todo.md` file
 
 Nice extra features:
