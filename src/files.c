@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <memory.h>
 #include <malloc.h>
 
 #include "files.h"
@@ -18,8 +17,9 @@ void read_source_file(char *file_path, char *dest_list) {
     fp = fopen(file_path, "r");
     if(fp == NULL) {
         // TODO: This should go to STDERR
-        printf("ERROR: File %s could not be opened.\n", file_path);
+        printf("[ ERROR ]: File %s could not be opened.\n", file_path);
     }
+    //printf("Name of file: %s\n", file_path); // FOR DEBUGGING
 
     // Scan file line by line
     unsigned int ln_num = 1;
@@ -28,12 +28,15 @@ void read_source_file(char *file_path, char *dest_list) {
     // Main line scanning loop
     while(fgets(line, sizeof(line), fp)) {
         if(verify_todo_item(line)) {
-            printf("Found a match on line: %d\n", ln_num); // For debugging only
+            //printf("Found a match on line: %d\n", ln_num); // FOR DEBUGGING 
 
             // TODO: Parse line here
             char *parsed_line = malloc(MAX_LINE_LENGTH);
-            parse_task_line(parsed_line, line, ln_num, *file_path);
+            clean_task_line(parsed_line, line);
+            parse_task_line(parsed_line, line, ln_num, file_path);
+
             printf("Parsed line: %s\n", parsed_line);
+            free(parsed_line);
         }
         ln_num++;
     }
