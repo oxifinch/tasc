@@ -1,4 +1,7 @@
 #include <stdio.h>
+#include <memory.h>
+#include <malloc.h>
+
 #include "files.h"
 #include "parsing.h"
 
@@ -24,13 +27,13 @@ void read_source_file(char *file_path, char *dest_list) {
 
     // Main line scanning loop
     while(fgets(line, sizeof(line), fp)) {
-        //printf("%3d: %s", ln_num, line); // For debugging only
         if(verify_todo_item(line)) {
             printf("Found a match on line: %d\n", ln_num); // For debugging only
+
             // TODO: Parse line here
-            char *parsed_line[MAX_LINE_LENGTH];
-            parse_task_line(*parsed_line, line, ln_num, *file_path);
-            printf("%s\n", *parsed_line);
+            char *parsed_line = malloc(MAX_LINE_LENGTH);
+            parse_task_line(parsed_line, line, ln_num, *file_path);
+            printf("Parsed line: %s\n", parsed_line);
         }
         ln_num++;
     }

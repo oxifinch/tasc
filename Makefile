@@ -12,3 +12,6 @@ build/files.o: src/files.c
 
 build/parsing.o: src/parsing.c
 	gcc -c src/parsing.c -o build/parsing.o
+
+debug: src/main.c src/files.c src/parsing.c
+	gcc -g src/main.c src/files.c src/parsing.c -o debug

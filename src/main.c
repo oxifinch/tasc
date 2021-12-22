@@ -10,7 +10,7 @@ void show_help() {
 
 int main(int argc, char *argv[]) {
     if(argc < 2) {
-        printf("ERROR: Please provide at least one file to operate on.\n");
+        printf("[ ERROR ] Please provide at least one file to operate on.\n");
         show_help();
         return 1;
     }
