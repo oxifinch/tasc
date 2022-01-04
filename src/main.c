@@ -1,54 +1,91 @@
-/* 
-                            == TASC: Tasc Scanner ==
---------------------------------------------------------------------------------
-  For each file provided as an argument:
-    - Open the file.
-    - Scan through the file lines by line to find task items.
-    - Create a new string for each task line and remove comment markers.
-    - Format the string to include a checkbox, filename and line number.
-    - Add the string(s) to the str_list. 
-    - Close the file.
- 
-  When the str_list is finished, write to the file "todo.md" or create it if it
-  doesn't exist. The begin writing to the file:
-  
-  For each string in the str_list:
-    - Append string to file.
-    - Check for errors.
+#include <stdio.h>
+#include <stdbool.h>
+#include <string.h>
+#include <ctype.h>
+#include <malloc.h>
 
-  When all write operations are done, close the file. If any errors were
-  encountered, report them. Then exit the program.
---------------------------------------------------------------------------------
+const int MAX_LINE_LENGTH  = 160;
+const int MAX_LINE_STORAGE = 100;
+
+void show_help();
+bool find_task_line(const char *line, int line_length);
+
+/*
+                            == TASC: Task Scanner ==
+   This program takes one or more files as an argument, and scans through them to
+   look for lines that contain the word TODO. It then takes these lines and formats
+   them into strings that contains the line number and file name, and writes these
+   newly formatted lines into another file called todo.md.
+
+   Main function:
+       - Check for arguments (files).
+       - For each argument, scan for TODO lines.
+           - For each line, format and append to a list
+           - When all lines are scanned, close the file
+       - When all files are done, open/create todo.md and write lines to it.
+
+   Other functions:
+       - find_task_line: Looks through a line to see if it contains the word TODO, 
+         both in uppercase or lowercase, and returns 1 or 0.
+       - 
 */
 
-#include <stdio.h>
-
-#include "files.h"
-#include "parsing.h"
-
-void show_help() {
-    printf("Usage:\n");
-    printf("    tasc FILE...\n");
-}
-
 int main(int argc, char *argv[]) {
-    // Checking that at least one argument is provided
     if(argc < 2) {
-        printf("[ ERROR ] Please provide at least one file to operate on.\n");
+        printf("[ ERROR ] Please provide at least one file as an argument!\n");
         show_help();
-        return 1;
     }
 
-    // The list of strings to save the tasks in
-    char *str_list[100][MAX_LINE_LENGTH];
+    // File pointer declared here, as it will be reused
+    FILE *fp;
+    char current_line[MAX_LINE_LENGTH];
+    char *parsed_lines[MAX_LINE_STORAGE];
+    int line_number = 1;
 
-    // Some comments just for testing
-    // TODO: HELLO THERE!
-    // todo: eat beans lmao
-
+    // Handling each file one by one
     for(int i = 1; i < argc; i++) {
-        read_source_file(argv[i], **str_list);
+        printf("File: %s\n", argv[i]);
+        fp = fopen(argv[i], "r");
+        if(fp == NULL) {
+            printf("[ WARNING ] Could not open file: %s. Skipping...\n", argv[i]);
+            continue;
+        }
+
+        // Line scanning loop
+        while((fgets(current_line, MAX_LINE_LENGTH, fp)) != NULL) {
+            //printf("%3d: %s", line_number, current_line); // DEBUGGING
+            line_number++;
+            if(find_task_line(current_line, strlen(current_line))) {
+                //printf("Found a match on line %d\n", line_number); // DEBUGGING
+            }
+        }
+
+        fclose(fp);
     }
 
     return 0;
+}
+
+// ----------------------------------------------------------------------------
+
+void show_help() {
+    printf("Usage: tasc FILE...\n");
+}
+
+bool find_task_line(const char *line, int line_length) {
+    bool result = false;
+    // Copying the string to make an uppercase conversion
+    char *copy = calloc(line_length, sizeof(char));
+    strncpy(copy, line, line_length);
+    
+    for(int i = 0; i < line_length; i++) {
+        *(copy + i) = toupper(*(copy + i));
+    }
+
+    if(strstr(copy, "TODO") != NULL) {
+        result = true;
+    }
+
+    free(copy);
+    return result;
 }
