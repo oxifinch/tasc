@@ -3,12 +3,14 @@
 #include <string.h>
 #include <ctype.h>
 #include <malloc.h>
+#include <unistd.h>
 
 const int MAX_LINE_LENGTH  = 160;
-const int MAX_LINE_STORAGE = 100;
+const int MAX_LINE_STORAGE = 64;
 
 void show_help();
 bool find_task_line(const char *line, int line_length);
+void trim_line(char *line);
 
 /*
                             == TASC: Task Scanner ==
@@ -36,15 +38,19 @@ int main(int argc, char *argv[]) {
         show_help();
     }
 
-    // File pointer declared here, as it will be reused
     FILE *fp;
     char current_line[MAX_LINE_LENGTH];
-    char *parsed_lines[MAX_LINE_STORAGE];
+    char *line_list[MAX_LINE_STORAGE];
+    int found_lines = 0;
     int line_number = 1;
 
-    // Handling each file one by one
+    for(int i = 0; i < MAX_LINE_STORAGE; i++) {
+        line_list[i] = (char*)malloc(MAX_LINE_LENGTH);
+    }
+
+
+    // Scanning each file
     for(int i = 1; i < argc; i++) {
-        printf("File: %s\n", argv[i]);
         fp = fopen(argv[i], "r");
         if(fp == NULL) {
             printf("[ WARNING ] Could not open file: %s. Skipping...\n", argv[i]);
@@ -53,14 +59,50 @@ int main(int argc, char *argv[]) {
 
         // Line scanning loop
         while((fgets(current_line, MAX_LINE_LENGTH, fp)) != NULL) {
-            //printf("%3d: %s", line_number, current_line); // DEBUGGING
-            line_number++;
+            // If a match is found, format the line and add it to the list
             if(find_task_line(current_line, strlen(current_line))) {
-                //printf("Found a match on line %d\n", line_number); // DEBUGGING
+                char *parsed_line = calloc(MAX_LINE_LENGTH, sizeof(char));
+                snprintf(parsed_line, MAX_LINE_LENGTH, "- [ ] %s:%d | %s", argv[i], line_number, current_line);
+
+                // Trimming the line before formatting
+                char *start = (strstr(parsed_line, "TODO") + 4);
+                for(int j = 0; j < strlen(parsed_line); j++) {
+                    printf("%c", *(start + j));
+                }
+                printf("^ Check out this line! ^\n");
+                sleep(1);
+
+                // Adding the parsed line to the array and incrementing how many 
+                // slots in the array are actually used. The number of found lines
+                // also corresponds to the correct index in which to insert the
+                // string, so I'll use that here.
+                line_list[found_lines] = parsed_line;
+                found_lines++;
             }
+            line_number++;
         }
 
+        line_number = 1;
         fclose(fp);
+    }
+    fp = NULL;
+
+    // Writing the parsed lines to a new file
+    fp = fopen("todo.md", "w+");
+    if(fp == NULL) {
+        printf("[ ERROR ] Could not open/create 'todo.md'. Abort.\n");
+        return 1;
+    }
+    for(int i = 0; i < found_lines; i++) {
+        fputs(line_list[i], fp);
+    }
+
+
+    // Closing files and freeing memory
+    fclose(fp);
+    fp = NULL;
+    for(int i = 0; i < MAX_LINE_STORAGE; i++) {
+        free(line_list[i]);
     }
 
     return 0;
@@ -88,4 +130,8 @@ bool find_task_line(const char *line, int line_length) {
 
     free(copy);
     return result;
+}
+
+void trim_line(char *line) {
+
 }
