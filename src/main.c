@@ -10,7 +10,7 @@ const int MAX_LINE_STORAGE = 64;
 
 void show_help();
 bool find_task_line(const char *line, int line_length);
-void trim_line(char *line);
+void trim_line(char *line, int max_len);
 
 /*
                             == TASC: Task Scanner ==
@@ -61,16 +61,9 @@ int main(int argc, char *argv[]) {
         while((fgets(current_line, MAX_LINE_LENGTH, fp)) != NULL) {
             // If a match is found, format the line and add it to the list
             if(find_task_line(current_line, strlen(current_line))) {
+                trim_line(current_line, strlen(current_line));
                 char *parsed_line = calloc(MAX_LINE_LENGTH, sizeof(char));
                 snprintf(parsed_line, MAX_LINE_LENGTH, "- [ ] %s:%d | %s", argv[i], line_number, current_line);
-
-                // Trimming the line before formatting
-                char *start = (strstr(parsed_line, "TODO") + 4);
-                for(int j = 0; j < strlen(parsed_line); j++) {
-                    printf("%c", *(start + j));
-                }
-                printf("^ Check out this line! ^\n");
-                sleep(1);
 
                 // Adding the parsed line to the array and incrementing how many 
                 // slots in the array are actually used. The number of found lines
@@ -132,6 +125,17 @@ bool find_task_line(const char *line, int line_length) {
     return result;
 }
 
-void trim_line(char *line) {
+void trim_line(char *line, int max_len) {
+    char *start = (strstr(line, "TODO") + 4);
 
+    // Move pointer one step forward if there is a : character
+    if(start[0] == ':') {
+        ++start;
+    }
+
+    // Use the same method to remove leading spaces
+    while(isspace(start[0])) {
+        ++start;
+    }
+    strncpy(line, start, max_len);
 }

@@ -1,4 +1,6 @@
 tasc
 debug
 build/*
+testing/*
 tags
+todo.md

@@ -7,6 +7,6 @@ int main() {
 
     // TODO: Needs a line break.
     // TODO: Fix the formatting
-    printf("YEEEAHQ!!!");
+    printf("TODO: Eat beans");
     return 0;
 }
