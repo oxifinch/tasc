@@ -3,7 +3,6 @@
 #include <string.h>
 #include <ctype.h>
 #include <malloc.h>
-#include <unistd.h>
 
 const int MAX_LINE_LENGTH  = 160;
 const int MAX_LINE_STORAGE = 64;
@@ -41,7 +40,7 @@ int main(int argc, char *argv[]) {
     FILE *fp;
     char current_line[MAX_LINE_LENGTH];
     char *line_list[MAX_LINE_STORAGE];
-    int found_lines = 0;
+    int lines_found = 0;
     int line_number = 1;
 
     for(int i = 0; i < MAX_LINE_STORAGE; i++) {
@@ -69,8 +68,8 @@ int main(int argc, char *argv[]) {
                 // slots in the array are actually used. The number of found lines
                 // also corresponds to the correct index in which to insert the
                 // string, so I'll use that here.
-                line_list[found_lines] = parsed_line;
-                found_lines++;
+                line_list[lines_found] = parsed_line;
+                lines_found++;
             }
             line_number++;
         }
@@ -80,16 +79,20 @@ int main(int argc, char *argv[]) {
     }
     fp = NULL;
 
+    if(lines_found < 1) {
+        printf("Found and parsed %d TODO items.\n", lines_found);
+        return 1;
+    }
+
     // Writing the parsed lines to a new file
     fp = fopen("todo.md", "w+");
     if(fp == NULL) {
         printf("[ ERROR ] Could not open/create 'todo.md'. Abort.\n");
         return 1;
     }
-    for(int i = 0; i < found_lines; i++) {
+    for(int i = 0; i < lines_found; i++) {
         fputs(line_list[i], fp);
     }
-
 
     // Closing files and freeing memory
     fclose(fp);
@@ -98,6 +101,7 @@ int main(int argc, char *argv[]) {
         free(line_list[i]);
     }
 
+    printf("Found and parsed %d TODO items.\n", lines_found);
     return 0;
 }
 
