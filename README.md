@@ -20,9 +20,9 @@ Essential features:
 - [x] Read file(s) from command line
 - [x] Scan each file and find TODO lines
 - [x] Parse each line and return a formatted string
-- [ ] Append formatted string to `todo.md` file
+- [x] Append formatted string to `todo.md` file
 
 Nice extra features:
-- [ ] Filter out comment correctly depending on language/comment style
+- [x] Filter out comment correctly depending on language/comment style
 - [ ] Handle multi-line TODO items
 - [ ] Keep old/don't overwrite finished tasks in `todo.md` when running Tasc again
