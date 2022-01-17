@@ -3,8 +3,6 @@
 A simple command line utility which scans source files for comments labeled
 "**TODO**" and creates a `todo.md` file with checkboxes for each task it finds.
 
----
-
 ## Usage
 Run `tasc` on any number of files, for example `tasc src/*`. The resulting `todo.md`
 file should contain task items with the filename(relative to the `todo.md` file) and
