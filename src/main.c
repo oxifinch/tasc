@@ -42,7 +42,7 @@ int main(int argc, char *argv[]) {
     char current_line[MAX_LINE_LENGTH];
     char *line_list[MAX_LINE_STORAGE];
     int lines_found = 0;
-    int line_number = 1;
+    int line_number = 0;
 
     for(int i = 0; i < MAX_LINE_STORAGE; i++) {
         line_list[i] = (char*)malloc(MAX_LINE_LENGTH);
@@ -58,12 +58,26 @@ int main(int argc, char *argv[]) {
         }
 
         // Line scanning loop
+        bool was_one = false;
         while((fgets(current_line, MAX_LINE_LENGTH, fp)) != NULL) {
             // If a match is found, format the line and add it to the list
             if(find_task_line(current_line, strlen(current_line))) {
                 trim_line(current_line, strlen(current_line));
                 char *parsed_line = calloc(MAX_LINE_LENGTH, sizeof(char));
+
+                // Really ugly/silly solution for offsetting only the first line in a
+                // file by 1.
+                if(line_number == 0) {
+                    was_one = true;
+                    line_number++;
+                }
+
                 snprintf(parsed_line, MAX_LINE_LENGTH, "- [ ] %s:%d | %s", argv[i], line_number, current_line);
+
+                if(was_one) {
+                    was_one = false;
+                    line_number--;
+                }
 
                 // Adding the parsed line to the array and incrementing how many 
                 // slots in the array are actually used. The number of found lines
