@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
 #include <ctype.h>
@@ -130,7 +131,18 @@ bool find_task_line(const char *line, int line_length) {
 }
 
 void trim_line(char *line, int max_len) {
-    char *start = (strstr(line, "TODO") + 4);
+    char *token_str = (char*)calloc(6, sizeof(char));
+    strncpy(token_str, "TODO", 5);
+
+    if((strstr(line, "TODO")) == NULL) {
+        strncpy(token_str, "todo", 5);
+        if((strstr(line, "todo")) == NULL) {
+            printf("[ ERROR ] Unable to validate TODO token. Aborting...\n");
+            exit(-1);
+        }
+    }
+    char *start = (strstr(line, token_str) + 4);
+    free(token_str);
 
     // Move pointer one step forward if there is a : character
     if(start[0] == ':') {
