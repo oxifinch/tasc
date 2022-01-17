@@ -10,9 +10,9 @@ Run `tasc` on any number of files, for example `tasc src/*`. The resulting `todo
 file should contain task items with the filename(relative to the `todo.md` file) and
 line number attached, something like this:
 ```md
-- [ ] src/main.c:32 Move these functions to their own separate files
-- [ ] src/parsing.c:78 This works, but the implementation is a bit janky
-- [ ] src/parsing.c:93 Handle errors here, don't assume input is valid
+- [ ] src/main.c:32 | Move these functions to their own separate files
+- [ ] src/parsing.c:78 | This works, but the implementation is a bit janky
+- [ ] src/parsing.c:93 | Handle errors here, don't assume input is valid
 ```
 
 ## Installation
